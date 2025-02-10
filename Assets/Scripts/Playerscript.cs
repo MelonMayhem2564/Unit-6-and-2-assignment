@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -79,14 +80,21 @@ public class Playerscript: MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-
-        groundedPlayer = controller.isGrounded;
-
+        if (groundedPlayer == false)
+        {
+            StartCoroutine(JumpDelay()); 
+        }
+         
         if (groundedPlayer)
         {
             playerVelocity.y = -6f;
         }
 
+    }
+    IEnumerator JumpDelay()
+    {
+        yield return new WaitForSeconds(2);
+        groundedPlayer = controller.isGrounded;
     }
     void PlayerPunch()
     {
