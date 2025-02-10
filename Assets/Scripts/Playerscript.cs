@@ -7,7 +7,7 @@ public class Playerscript: MonoBehaviour
     public CharacterController controller;
     public Vector3 playerVelocity;
     public bool groundedPlayer;
-    public float speed = 2f;
+    public float speed = 20f;
     public float jumpHeight = 1.5f;
     public float gravityValue = -9.81f;
     public Transform cam;
@@ -43,8 +43,8 @@ public class Playerscript: MonoBehaviour
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(MoveDir.normalized * speed * Time.deltaTime);
+            Vector3 SimpleMoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(SimpleMoveDir.normalized * speed * Time.deltaTime);
             anim.SetBool("Run", true);
         }
         else
@@ -54,23 +54,11 @@ public class Playerscript: MonoBehaviour
     }
     void PlayerJump()
     {
-        //print("grounded=" + groundedPlayer);
-
-
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * speed);
-
-
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
-
         if (Input.GetButtonDown("Jump"))
         {
             if( groundedPlayer )
             {
-                playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * -4.0f * gravityValue);
                 anim.SetBool("Jump", true);
                 print("do jump");
             }
@@ -97,7 +85,7 @@ public class Playerscript: MonoBehaviour
 
         if (groundedPlayer)
         {
-            playerVelocity.y = -2f;
+            playerVelocity.y = -6f;
         }
 
     }
