@@ -54,23 +54,22 @@ public class Playerscript: MonoBehaviour
     }
     void PlayerJump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (groundedPlayer)
         {
-            if( groundedPlayer )
+            if(Input.GetButtonDown("Jump"))
             {
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * -4.0f * gravityValue);
                 anim.SetBool("Jump", true);
                 print("do jump");
             }
 
-            if (playerVelocity.y > 6)
+            if (playerVelocity.y > -6)
             {
-                ;
+                groundedPlayer = false;
             }
             else
             {
                 print("can't jump");
-
             }
         }
         else
@@ -99,7 +98,6 @@ public class Playerscript: MonoBehaviour
         {
             anim.SetBool("Punch", false);
         }
-        
     }
 
     void SetDebugSpeed()
@@ -112,8 +110,5 @@ public class Playerscript: MonoBehaviour
         {
             Time.timeScale = 0.35f;
         }
-
-
-
     }
 }
