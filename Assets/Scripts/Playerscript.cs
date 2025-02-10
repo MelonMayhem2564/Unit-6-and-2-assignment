@@ -7,12 +7,12 @@ public class Playerscript: MonoBehaviour
     public CharacterController controller;
     public Vector3 playerVelocity;
     public bool groundedPlayer;
-    public float speed = 20f;
+    private float speed = 5f;
     public float jumpHeight = 1.5f;
     public float gravityValue = -9.81f;
     public Transform cam;
     Animator anim;
-    public float turnSmoothTime = 0.1f;
+    private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     bool isGrounded;
     bool isJumping;
