@@ -93,7 +93,7 @@ public class Playerscript: MonoBehaviour
     }
     IEnumerator JumpDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2.3f);
         groundedPlayer = controller.isGrounded;
     }
     void PlayerPunch()
