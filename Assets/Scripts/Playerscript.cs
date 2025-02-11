@@ -9,14 +9,14 @@ public class Playerscript: MonoBehaviour
     public Vector3 playerVelocity;
     public bool groundedPlayer;
     private float speed = 5f;
-    public float jumpHeight = 1.5f;
+    private float jumpHeight = 1f;
     public float gravityValue = -9.81f;
     public Transform cam;
     Animator anim;
     private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
-    bool isGrounded;
-    bool isJumping;
+    //bool isGrounded;
+    //bool isJumping;
 
     void Start()
     {
@@ -30,6 +30,8 @@ public class Playerscript: MonoBehaviour
         PlayerPunch();
 
         SetDebugSpeed();
+
+        groundedPlayer = controller.isGrounded;
     }
 
     void CameraAndMovement()
@@ -55,18 +57,28 @@ public class Playerscript: MonoBehaviour
     }
     void PlayerJump()
     {
-        if (groundedPlayer)
+        float speed = new Vector3(controller.velocity.x, 0, controller.velocity.z).magnitude;
+
+        print("speed=" + speed);
+         
+
+        if (Input.GetButtonDown("Jump"))
         {
-            if(Input.GetButtonDown("Jump"))
+            if (groundedPlayer)
             {
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * -4.0f * gravityValue);
-                anim.SetBool("Jump", true);
-                print("do jump");
-            }
+                if (speed < 0.1)
+                {
+                    JumpDelay();
+                    anim.SetBool("StandingJump", true);
+                    print("do standing jump");
+                }
 
-            if (playerVelocity.y > -6)
-            {
-                groundedPlayer = false;
+                if (speed > 0.1)
+                {
+                    anim.SetBool("Jump", true);
+                    print("do jump");
+                } 
             }
             else
             {
@@ -75,26 +87,26 @@ public class Playerscript: MonoBehaviour
         }
         else
         {
-            anim.SetBool("Jump", false);
+        }
+
+        if( playerVelocity.y < 0 )
+        {
+            if(groundedPlayer == true)
+            {
+                anim.SetBool("Jump", false);
+                anim.SetBool("StandingJump", false);
+                playerVelocity.y = -2;
+                print("landed");
+            }
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-        if (groundedPlayer == false)
-        {
-            StartCoroutine(JumpDelay()); 
-        }
-         
-        if (groundedPlayer)
-        {
-            playerVelocity.y = -6f;
-        }
 
     }
     IEnumerator JumpDelay()
     {
-        yield return new WaitForSeconds(2.3f);
-        groundedPlayer = controller.isGrounded;
+        yield return new WaitForSeconds(1f);
     }
     void PlayerPunch()
     {
