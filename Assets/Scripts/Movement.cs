@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -20,7 +19,6 @@ public class Movement : MonoBehaviour
     void Update()
     {
         PlayerMovement();
-        PlayerJump();
     }
     void PlayerMovement()
     {
@@ -51,8 +49,4 @@ public class Movement : MonoBehaviour
             transform.Rotate(0, 0.5f, 0, Space.Self);
         }
     }
-    void PlayerJump()
-    {
-
-    } 
 }
